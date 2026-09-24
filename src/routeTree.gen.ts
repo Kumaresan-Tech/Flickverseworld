@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GenresRouteImport } from './routes/genres'
 import { Route as WatchlistRouteImport } from './routes/watchlist'
 import { Route as MoviesIndexRouteImport } from './routes/movies.index'
@@ -24,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GenresRoute = GenresRouteImport.update({
@@ -50,6 +56,7 @@ const MoviesIdRoute = MoviesIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/genres': typeof GenresRoute
   '/watchlist': typeof WatchlistRoute
   '/movies/$id': typeof MoviesIdRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/genres': typeof GenresRoute
   '/watchlist': typeof WatchlistRoute
   '/movies/$id': typeof MoviesIdRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/genres': typeof GenresRoute
   '/watchlist': typeof WatchlistRoute
   '/movies/$id': typeof MoviesIdRoute
@@ -75,13 +84,27 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/genres' | '/watchlist' | '/movies/$id' | '/movies/'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/genres'
+    | '/watchlist'
+    | '/movies/$id'
+    | '/movies/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/genres' | '/watchlist' | '/movies/$id' | '/movies'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/genres'
+    | '/watchlist'
+    | '/movies/$id'
+    | '/movies'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/contact'
     | '/genres'
     | '/watchlist'
     | '/movies/$id'
@@ -91,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   GenresRoute: typeof GenresRoute
   WatchlistRoute: typeof WatchlistRoute
   MoviesIdRoute: typeof MoviesIdRoute
@@ -111,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/genres': {
@@ -147,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   GenresRoute: GenresRoute,
   WatchlistRoute: WatchlistRoute,
   MoviesIdRoute: MoviesIdRoute,
