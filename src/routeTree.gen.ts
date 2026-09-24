@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MoviesIndexRouteImport } from './routes/movies.index'
+import { Route as MoviesIdRouteImport } from './routes/movies.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const MoviesIndexRoute = MoviesIndexRouteImport.update({
   path: '/movies/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MoviesIdRoute = MoviesIdRouteImport.update({
+  id: '/movies/$id',
+  path: '/movies/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/movies/$id': typeof MoviesIdRoute
   '/movies/': typeof MoviesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/movies/$id': typeof MoviesIdRoute
   '/movies': typeof MoviesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/movies/$id': typeof MoviesIdRoute
   '/movies/': typeof MoviesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/movies/'
+  fullPaths: '/' | '/movies/$id' | '/movies/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/movies'
-  id: '__root__' | '/' | '/movies/'
+  to: '/' | '/movies/$id' | '/movies'
+  id: '__root__' | '/' | '/movies/$id' | '/movies/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MoviesIdRoute: typeof MoviesIdRoute
   MoviesIndexRoute: typeof MoviesIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MoviesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/movies/$id': {
+      id: '/movies/$id'
+      path: '/movies/$id'
+      fullPath: '/movies/$id'
+      preLoaderRoute: typeof MoviesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MoviesIdRoute: MoviesIdRoute,
   MoviesIndexRoute: MoviesIndexRoute,
 }
 export const routeTree = rootRouteImport
